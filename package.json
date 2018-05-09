@@ -1,8 +1,8 @@
 {
-  "name": "talonchik",
+  "name": "tickets",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://zozzycode.com/zozzy/100talons",
+  "homepage": "http://zozzycode.com/zozzy/100tickets",
   "dependencies": {
     "firebase": "^5.0.1",
     "materialize-css": "^1.0.0-rc.1",

@@ -1,12 +1,12 @@
 import { database } from "../database/config";
 
-export function startAddingTalon(talon) {
+export function startAddingTicket(ticket) {
   return dispatch => {
     return database
-      .ref("talons")
-      .update({ [talon.id]: talon })
+      .ref("tickets")
+      .update({ [ticket.id]: ticket })
       .then(() => {
-        dispatch(addTalon(talon));
+        dispatch(addTicket(ticket));
       })
       .catch(error => {
         console.log(error);
@@ -14,17 +14,17 @@ export function startAddingTalon(talon) {
   };
 }
 
-export function startLoadingTalons() {
+export function startLoadingTickets() {
   return dispatch => {
     return database
-      .ref("talons")
+      .ref("tickets")
       .once("value")
       .then(snapshot => {
-        let talons = [];
+        let tickets = [];
         snapshot.forEach(childSnapshot => {
-          talons.push(childSnapshot.val());
+          tickets.push(childSnapshot.val());
         });
-        dispatch(loadTalons(talons));
+        dispatch(loadTickets(tickets));
       })
       .catch(error => {
         console.log(error);
@@ -32,23 +32,23 @@ export function startLoadingTalons() {
   };
 }
 
-export function removeTalon(index) {
+export function removeTicket(index) {
   return {
-    type: "REMOVE_TALON",
+    type: "REMOVE_TICKET",
     index
   };
 }
 
-export function addTalon(talon) {
+export function addTicket(ticket) {
   return {
-    type: "ADD_TALON",
-    talon
+    type: "ADD_TICKET",
+    ticket
   };
 }
 
-export function loadTalons(talons) {
+export function loadTickets(tickets) {
   return {
-    type: "LOAD_TALONS",
-    talons
+    type: "LOAD_TICKETS",
+    tickets
   };
 }

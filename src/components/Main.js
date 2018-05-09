@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
 import RandomForm from "./RandomForm";
-import TalonsList from "./TalonsList";
+import TicketsList from "./TicketsList";
 import Single from "./Single";
 import * as routes from "../routes/urls";
 
@@ -9,7 +9,7 @@ class Main extends Component {
   state = { loading: true };
 
   componentDidMount() {
-    this.props.startLoadingTalons().then(() => {
+    this.props.startLoadingTickets().then(() => {
       this.setState({ loading: false });
     });
     // this.props.startLoadingComments();
@@ -18,11 +18,11 @@ class Main extends Component {
   render() {
     return (
       <div className="container">
-        <h1>100Talons</h1>
+        <h1>100Tickets</h1>
         <Route
           exact
           path={routes.HOME}
-          render={() => <TalonsList {...this.props} />}
+          render={() => <TicketsList {...this.props} />}
         />
         <Route
           path={routes.ADD_NEW}

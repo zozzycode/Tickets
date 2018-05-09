@@ -1,4 +1,4 @@
-const extTalons = [
+const extTickets = [
   {
     id: 1,
     number: 180561,
@@ -7,4 +7,4 @@ const extTalons = [
   }
 ];
 
-export default extTalons;
+export default extTickets;

@@ -1,2 +1,2 @@
-100Talons
-http://zozzycode.com/zozzy/100talons/
+100Tickets
+http://zozzycode.com/zozzy/100tickets/

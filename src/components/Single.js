@@ -1,19 +1,19 @@
 import React, { Component } from "react";
-import Talon from "./Talon";
+import Ticket from "./Ticket";
 // import Comments from './Comments';
 
 class Single extends Component {
   render() {
-    const { match, talons } = this.props;
+    const { match, tickets } = this.props;
     const id = Number(match.params.id);
-    const talon = talons.find(talon => talon.id === id);
-    const index = this.props.talons.findIndex(talon => talon.id === id);
+    const ticket = tickets.find(ticket => ticket.id === id);
+    const index = this.props.tickets.findIndex(ticket => ticket.id === id);
     if (this.props.loading === true) {
       return <div className="loader">...loading</div>;
-    } else if (talon) {
+    } else if (ticket) {
       return (
         <ul className="collection">
-          <Talon talon={talon} {...this.props} index={index} />
+          <Ticket ticket={ticket} {...this.props} index={index} />
         </ul>
       );
     } else {

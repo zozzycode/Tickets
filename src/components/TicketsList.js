@@ -1,22 +1,27 @@
 import React from "react";
-import Talon from "./Talon";
+import Ticket from "./Ticket";
 import { Link } from "react-router-dom";
 import * as routes from "../routes/urls";
 
-function TalonsList(props) {
+function TicketsList(props) {
   return (
     <div>
       <Link className="waves-effect waves-light btn-large" to={routes.ADD_NEW}>
-        Generate new Talon
+        Generate new ticket
       </Link>
       <div className="row">
         <ul className="collection">
-          {props.talons
+          {props.tickets
             .sort(function(x, y) {
               return y.id - x.id;
             })
-            .map((talon, index) => (
-              <Talon key={talon.id} talon={talon} {...props} index={index} />
+            .map((ticket, index) => (
+              <Ticket
+                key={ticket.id}
+                ticket={ticket}
+                {...props}
+                index={index}
+              />
             ))}
         </ul>
       </div>
@@ -24,4 +29,4 @@ function TalonsList(props) {
   );
 }
 
-export default TalonsList;
+export default TicketsList;

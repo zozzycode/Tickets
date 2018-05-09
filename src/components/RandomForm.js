@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import talonchik from "../img/talonchik.jpg";
+// import ticketbg from "../img/ticketbg.jpg";
 import * as routes from "../routes/urls";
 
 class RandomForm extends Component {
@@ -19,15 +19,15 @@ class RandomForm extends Component {
     const number = event.target.elements.number.value;
     const solution = event.target.elements.solution.value;
     const solved = event.target.elements.solved.checked;
-    const talon = {
+    const ticket = {
       id: Number(new Date()),
       number: number,
       solution: solution,
       solved: solved
     };
     if (number && solution) {
-      this.props.startAddingTalon(talon);
-      // this.props.addTalon(talon);
+      this.props.startAddingTicket(ticket);
+      // this.props.addTicket(ticket);
       this.props.history.push(routes.HOME);
       console.log("number", number);
       console.log("solution", solution);

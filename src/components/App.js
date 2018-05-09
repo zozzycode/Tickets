@@ -6,7 +6,7 @@ import { withRouter } from "react-router";
 
 function mapStateToProps(state) {
   return {
-    talons: state.talons,
+    tickets: state.tickets,
     comments: state.comments
   };
 }

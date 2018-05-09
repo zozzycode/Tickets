@@ -1,4 +1,4 @@
-import extTalons from "../data/extTalons";
+// import extTickets from "../data/extTickets";
 import { combineReducers } from "redux";
 
 function comments(state = {}, action) {
@@ -21,23 +21,23 @@ function comments(state = {}, action) {
   }
 }
 
-function talons(state = [], action) {
+function tickets(state = [], action) {
   console.log(state);
   switch (action.type) {
-    case "REMOVE_TALON":
+    case "REMOVE_TICKET":
       return [
         ...state.slice(0, action.index),
         ...state.slice(action.index + 1)
       ];
-    case "ADD_TALON":
-      return [...state, action.talon];
-    case "LOAD_TALONS":
-      return action.talons;
+    case "ADD_TICKET":
+      return [...state, action.ticket];
+    case "LOAD_TICKETS":
+      return action.tickets;
     default:
       return state;
   }
 }
 
-const rootReducer = combineReducers({ talons, comments });
+const rootReducer = combineReducers({ tickets, comments });
 
 export default rootReducer;
