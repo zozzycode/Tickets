@@ -20,7 +20,7 @@ class RandomForm extends Component {
   }
 
   handleCalculate() {
-    const { calcResultTmp, randShow } = this.state;
+    const { calcResultTmp, randShow, error } = this.state;
 
     if (calcResultTmp !== "") {
       const calcResultClear = calcResultTmp.replace(/[^-()\d/*+^%]/g, "");
@@ -52,7 +52,11 @@ class RandomForm extends Component {
             solved:
               calculatedResult === 100 && randShow === calcResultClearNumbers
                 ? true
-                : false
+                : false,
+            error:
+              randShow !== calcResultClearNumbers
+                ? "Random numbers and numbers in the solution field, don't match"
+                : error
           });
         } else {
           this.setState({
