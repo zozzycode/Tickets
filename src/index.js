@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./styles/materialize.css";
+import "./styles/App.css";
 import { BrowserRouter } from "react-router-dom";
 import { createStore, applyMiddleware } from "redux";
 import rootReducer from "./redux/reducer";

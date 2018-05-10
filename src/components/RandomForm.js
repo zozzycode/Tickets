@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import ticketbg from "../img/ticketbg.jpg";
 import * as routes from "../routes/urls";
+import { Parser } from "expr-eval";
 
 class RandomForm extends Component {
   constructor() {
@@ -9,9 +10,66 @@ class RandomForm extends Component {
       randShow: this.getRandomNumber(),
       solution: "",
       calcResult: "",
-      show: false
+      calcResultTmp: "",
+      solved: false,
+      saveAsNotSolved: false,
+      error: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCalculate = this.handleCalculate.bind(this);
+  }
+
+  handleCalculate() {
+    const { calcResultTmp, randShow } = this.state;
+
+    if (calcResultTmp !== "") {
+      const calcResultClear = calcResultTmp.replace(/[^-()\d/*+^%]/g, "");
+      console.log("calcResultClear", calcResultClear);
+
+      const calcResultClearSplit = calcResultClear.split("");
+      const splitFirst = calcResultClearSplit[0];
+      const splitLast = calcResultClearSplit[calcResultClearSplit.length - 1];
+      console.log("splitFirst", splitFirst);
+      console.log("splitLast", splitLast);
+
+      if (/[+*/^%]/.test(splitFirst) || /[-+*/^%]/.test(splitLast)) {
+        this.setState({
+          error:
+            "First or Last symbol is incorrect. Please enter correct math expressions."
+        });
+      } else {
+        const calcResultClearNumbers = calcResultTmp.replace(/[^\d]/g, "");
+        console.log("calcResultClearNumbers", calcResultClearNumbers);
+
+        if (calcResultClear.length !== 0) {
+          const parser = new Parser();
+          const expr = parser.parse(calcResultClear);
+          const calculatedResult = expr.evaluate();
+          console.log("calculatedResult", calculatedResult);
+          this.setState({
+            calcResult: calculatedResult,
+            solution: calcResultClear,
+            solved:
+              calculatedResult === 100 && randShow === calcResultClearNumbers
+                ? true
+                : false
+          });
+        } else {
+          this.setState({
+            error:
+              "Calculating string is empty. Please use only numbers and math operators."
+          });
+          console.log(
+            "Calculating string is empty. Please use only numbers and math operators."
+          );
+          console.log("===================");
+        }
+      }
+    } else {
+      this.setState({
+        error: "Solution field is empty. Please enter your solution."
+      });
+    }
   }
 
   handleSubmit(event) {
@@ -65,7 +123,11 @@ class RandomForm extends Component {
               name="number"
               value={this.state.randShow}
               onChange={event =>
-                this.setState({ randShow: event.target.value })
+                this.setState({
+                  randShow: event.target.value,
+                  solved: false,
+                  error: ""
+                })
               }
             />
             <label htmlFor="solution">Solution </label>
@@ -77,30 +139,67 @@ class RandomForm extends Component {
               onChange={event => {
                 this.setState({
                   solution: event.target.value,
-                  calcResult: event.target.value
+                  calcResultTmp: event.target.value,
+                  solved: false,
+                  error: ""
                 });
               }}
             />
-            <label>
-              <input type="checkbox" name="solved" />
-              <span>Solved</span>
-            </label>
-            {this.state.show && (
-              <div>
-                <label htmlFor="calcresult">Result </label>
+            <div className="blue-text text-darken-2">{this.state.error}</div>
+            <div>
+              <label htmlFor="calcresult">Result </label>
+              <input
+                type="text"
+                placeholder="Calc Result"
+                name="calcresult"
+                value={this.state.calcResult}
+                disabled
+              />
+            </div>
+            <div className="chb-margin-right">
+              <label>
                 <input
-                  type="text"
-                  placeholder="Calc Result"
-                  name="calcresult"
-                  value={this.state.calcResult}
-                  disabled
+                  type="checkbox"
+                  name="solved"
+                  checked={this.state.solved}
                 />
-              </div>
-            )}
+                <span>Solved</span>
+              </label>
+            </div>
+            <div className="chb-margin-right">
+              <label>
+                <input
+                  type="checkbox"
+                  name="saveasnotsolved"
+                  checked={this.state.saveAsNotSolved}
+                  onChange={() => {
+                    this.setState({
+                      saveAsNotSolved: !this.state.saveAsNotSolved,
+                      solved: false
+                    });
+                  }}
+                />
+                <span>Save As Not Solved</span>
+              </label>
+            </div>
           </div>
           <br />
           <div>
-            <button className="waves-effect waves-light btn-large">Save</button>
+            {!this.state.solved &&
+              !this.state.saveAsNotSolved && (
+                <button
+                  type="button"
+                  className="waves-effect waves-light btn-large"
+                  onClick={this.handleCalculate}
+                >
+                  Calculate
+                </button>
+              )}
+            {(this.state.solved || this.state.saveAsNotSolved) && (
+              <button className="waves-effect waves-light btn-large">
+                Save
+              </button>
+            )}
           </div>
         </form>
       </div>

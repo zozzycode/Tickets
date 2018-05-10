@@ -9,6 +9,14 @@ function TicketsList(props) {
       <Link className="waves-effect waves-light btn-large" to={routes.ADD_NEW}>
         Generate new ticket
       </Link>
+      <a
+        className="waves-effect waves-light btn-large"
+        href="http://tram.mashke.org/tickets/?p=20"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+      >
+        Tickets History
+      </a>
       <div className="row">
         <ul className="collection">
           {props.tickets

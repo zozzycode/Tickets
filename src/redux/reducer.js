@@ -22,7 +22,7 @@ function comments(state = {}, action) {
 }
 
 function tickets(state = [], action) {
-  console.log(state);
+  // console.log(state);
   switch (action.type) {
     case "REMOVE_TICKET":
       return [
