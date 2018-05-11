@@ -13,10 +13,12 @@ class RandomForm extends Component {
       calcResultTmp: "",
       solved: false,
       saveAsNotSolved: false,
+      manual: false,
       error: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCalculate = this.handleCalculate.bind(this);
+    this.getRandomNumberRestart = this.getRandomNumberRestart.bind(this);
   }
 
   handleCalculate() {
@@ -24,13 +26,10 @@ class RandomForm extends Component {
 
     if (calcResultTmp !== "") {
       const calcResultClear = calcResultTmp.replace(/[^-()\d/*+^%]/g, "");
-      console.log("calcResultClear", calcResultClear);
 
       const calcResultClearSplit = calcResultClear.split("");
       const splitFirst = calcResultClearSplit[0];
       const splitLast = calcResultClearSplit[calcResultClearSplit.length - 1];
-      console.log("splitFirst", splitFirst);
-      console.log("splitLast", splitLast);
 
       if (/[+*/^%]/.test(splitFirst) || /[-+*/^%]/.test(splitLast)) {
         this.setState({
@@ -39,34 +38,36 @@ class RandomForm extends Component {
         });
       } else {
         const calcResultClearNumbers = calcResultTmp.replace(/[^\d]/g, "");
-        console.log("calcResultClearNumbers", calcResultClearNumbers);
 
         if (calcResultClear.length !== 0) {
           const parser = new Parser();
           const expr = parser.parse(calcResultClear);
           const calculatedResult = expr.evaluate();
-          console.log("calculatedResult", calculatedResult);
           this.setState({
             calcResult: calculatedResult,
             solution: calcResultClear,
             solved:
-              calculatedResult === 100 && randShow === calcResultClearNumbers
+              calculatedResult === 100 &&
+              randShow === calcResultClearNumbers &&
+              randShow.length === 6
                 ? true
                 : false,
             error:
               randShow !== calcResultClearNumbers
-                ? "Random numbers and numbers in the solution field, don't match"
-                : error
+                ? "Random number and numbers in the solution field, don't match"
+                : randShow.length < 6
+                  ? "Random number must consist 6 numbers"
+                  : error
           });
         } else {
           this.setState({
             error:
               "Calculating string is empty. Please use only numbers and math operators."
           });
-          console.log(
-            "Calculating string is empty. Please use only numbers and math operators."
-          );
-          console.log("===================");
+          this.setState({
+            error:
+              "Calculating string is empty. Please use only numbers and math operators."
+          });
         }
       }
     } else {
@@ -85,16 +86,27 @@ class RandomForm extends Component {
       id: Number(new Date()),
       number: number,
       solution: solution,
-      solved: solved
+      solved: solved,
+      manual: this.state.manual
     };
     if (number && solution) {
       this.props.startAddingTicket(ticket);
       // this.props.addTicket(ticket);
       this.props.history.push(routes.HOME);
-      console.log("number", number);
-      console.log("solution", solution);
-      console.log("solved", solved);
     }
+  }
+
+  getRandomNumberRestart() {
+    this.setState({
+      randShow: this.getRandomNumber(),
+      solution: "",
+      calcResult: "",
+      calcResultTmp: "",
+      solved: false,
+      saveAsNotSolved: false,
+      manual: false,
+      error: ""
+    });
   }
 
   getRandomNumber() {
@@ -120,90 +132,133 @@ class RandomForm extends Component {
       <div>
         <form onSubmit={this.handleSubmit}>
           <div>
-            <label htmlFor="number">Random Number </label>
-            <input
-              type="number"
-              placeholder="Enter Your Number"
-              name="number"
-              value={this.state.randShow}
-              onChange={event =>
-                this.setState({
-                  randShow: event.target.value,
-                  solved: false,
-                  error: ""
-                })
-              }
-            />
-            <label htmlFor="solution">Solution </label>
-            <input
-              type="text"
-              placeholder="Enter Your Solution"
-              name="solution"
-              value={this.state.solution}
-              onChange={event => {
-                this.setState({
-                  solution: event.target.value,
-                  calcResultTmp: event.target.value,
-                  solved: false,
-                  error: ""
-                });
-              }}
-            />
-            <div className="blue-text text-darken-2">{this.state.error}</div>
-            <div>
-              <label htmlFor="calcresult">Result </label>
-              <input
-                type="text"
-                placeholder="Calc Result"
-                name="calcresult"
-                value={this.state.calcResult}
-                disabled
-              />
-            </div>
-            <div className="chb-margin-right">
-              <label>
+            <div className="row">
+              <div className="col s8">
+                <label htmlFor="number">Random Number </label>
                 <input
-                  type="checkbox"
-                  name="solved"
-                  checked={this.state.solved}
-                />
-                <span>Solved</span>
-              </label>
-            </div>
-            <div className="chb-margin-right">
-              <label>
-                <input
-                  type="checkbox"
-                  name="saveasnotsolved"
-                  checked={this.state.saveAsNotSolved}
-                  onChange={() => {
+                  type="text"
+                  placeholder="Enter Your Number"
+                  name="number"
+                  value={this.state.randShow}
+                  onChange={event => {
+                    const sanitizedRand = event.target.value.replace(
+                      /[^\d]/g,
+                      ""
+                    );
+                    console.log("sanitizeRand", sanitizedRand);
+                    console.log("this.state.randShow", this.state.randShow);
                     this.setState({
-                      saveAsNotSolved: !this.state.saveAsNotSolved,
-                      solved: false
+                      randShow:
+                        sanitizedRand.length < 6
+                          ? sanitizedRand
+                          : sanitizedRand.substr(0, 6),
+                      // ? event.target.value.replace(/[^\d]/g, "")
+                      // ? /^[\d]*$/.test(event.target.value)
+
+                      solved: false,
+                      manual: true,
+                      error: ""
                     });
                   }}
                 />
-                <span>Save As Not Solved</span>
-              </label>
+              </div>
+              <div className="col s3 padd-top">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="manual"
+                    checked={this.state.manual}
+                    disabled
+                  />
+                  <span>Manual</span>
+                </label>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col s8">
+                <label htmlFor="solution">Solution </label>
+                <input
+                  type="text"
+                  placeholder="Enter Your Solution"
+                  name="solution"
+                  value={this.state.solution}
+                  onChange={event => {
+                    const sanitizedSolution = event.target.value.replace(
+                      /[^-()\d/*+^%]/g,
+                      ""
+                    );
+                    this.setState({
+                      solution: sanitizedSolution,
+                      calcResultTmp: event.target.value,
+                      solved: false,
+                      error: ""
+                    });
+                  }}
+                />
+              </div>
+              <div className="col s3 padd-top">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="saveasnotsolved"
+                    checked={this.state.saveAsNotSolved}
+                    onChange={() => {
+                      this.setState({
+                        saveAsNotSolved: !this.state.saveAsNotSolved,
+                        solved: false
+                      });
+                    }}
+                  />
+                  <span>Save</span>
+                </label>
+              </div>
+            </div>
+            <div className="blue-text text-darken-2">{this.state.error}</div>
+            <div className="row">
+              <div className="col s8">
+                <label htmlFor="calcresult">Result </label>
+                <input
+                  type="text"
+                  placeholder="Calc Result"
+                  name="calcresult"
+                  value={this.state.calcResult}
+                  disabled
+                />
+              </div>
+              <div className="col s3 padd-top">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="solved"
+                    checked={this.state.solved}
+                    disabled
+                  />
+                  <span>Solved</span>
+                </label>
+              </div>
             </div>
           </div>
-          <br />
           <div>
-            {!this.state.solved &&
-              !this.state.saveAsNotSolved && (
-                <button
-                  type="button"
-                  className="waves-effect waves-light btn-large"
-                  onClick={this.handleCalculate}
-                >
-                  Calculate
-                </button>
-              )}
-            {(this.state.solved || this.state.saveAsNotSolved) && (
-              <button className="waves-effect waves-light btn-large">
-                Save
-              </button>
-            )}
+            <button
+              type="button"
+              className="btn marg"
+              onClick={this.handleCalculate}
+            >
+              Calculate
+            </button>
+            <button
+              className="btn marg"
+              disabled={!this.state.solved || this.state.saveAsNotSolved}
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              className="btn marg generate"
+              onClick={this.getRandomNumberRestart}
+            >
+              Generate new
+            </button>
           </div>
         </form>
       </div>

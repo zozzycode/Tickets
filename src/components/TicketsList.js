@@ -6,11 +6,11 @@ import * as routes from "../routes/urls";
 function TicketsList(props) {
   return (
     <div>
-      <Link className="waves-effect waves-light btn-large" to={routes.ADD_NEW}>
+      <Link className="btn marg" to={routes.ADD_NEW}>
         Generate new ticket
       </Link>
       <a
-        className="waves-effect waves-light btn-large"
+        className="btn marg"
         href="http://tram.mashke.org/tickets/?p=20"
         target="_blank"
         rel="noopener noreferrer nofollow"

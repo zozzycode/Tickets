@@ -15,11 +15,6 @@ class Main extends Component {
     // this.props.startLoadingComments();
   }
 
-  /*   <Route
-  path={routes.ALL}
-  render={params => <Redirect to={routes.HOME} />}
-/> */
-
   render() {
     return (
       <div className="container">
