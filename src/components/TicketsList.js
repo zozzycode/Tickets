@@ -7,7 +7,7 @@ function TicketsList(props) {
   return (
     <div>
       <Link className="btn marg" to={routes.ADD_NEW}>
-        Generate new ticket
+        New ticket
       </Link>
       <a
         className="btn marg"
@@ -15,7 +15,7 @@ function TicketsList(props) {
         target="_blank"
         rel="noopener noreferrer nofollow"
       >
-        Tickets History
+        History
       </a>
       <div className="row">
         <ul className="collection">

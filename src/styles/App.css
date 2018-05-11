@@ -6,6 +6,10 @@
   margin-right: 10px;
 }
 
+.row {
+  margin-bottom: 0;
+}
+
 .row .col {
   padding: 0;
 }
@@ -16,5 +20,5 @@
 }
 
 .generate {
-  margin-left: 40px;
+  margin-left: 50px;
 }
