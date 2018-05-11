@@ -145,16 +145,11 @@ class RandomForm extends Component {
                       /[^\d]/g,
                       ""
                     );
-                    console.log("sanitizeRand", sanitizedRand);
-                    console.log("this.state.randShow", this.state.randShow);
                     this.setState({
                       randShow:
                         sanitizedRand.length < 6
                           ? sanitizedRand
                           : sanitizedRand.substr(0, 6),
-                      // ? event.target.value.replace(/[^\d]/g, "")
-                      // ? /^[\d]*$/.test(event.target.value)
-
                       solved: false,
                       manual: true,
                       error: ""
@@ -248,7 +243,12 @@ class RandomForm extends Component {
             </button>
             <button
               className="btn marg"
-              disabled={!this.state.solved || this.state.saveAsNotSolved}
+              disabled={
+                this.state.solved === true ||
+                this.state.saveAsNotSolved === true
+                  ? false
+                  : true
+              }
             >
               Save
             </button>
