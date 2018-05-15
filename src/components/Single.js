@@ -4,10 +4,8 @@ import Ticket from "./Ticket";
 
 class Single extends Component {
   render() {
-    console.log("params", this.props.match.params.id);
     const { match, tickets } = this.props;
     const id = Number(match.params.id);
-    console.log("href", window.location.href);
     const ticket = tickets.find(ticket => ticket.id === id);
     const index = this.props.tickets.findIndex(ticket => ticket.id === id);
     if (this.props.loading === true) {

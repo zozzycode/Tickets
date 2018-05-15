@@ -14,11 +14,40 @@
   padding: 0;
 }
 
-.row .col.s3 {
+.row .col.s3.padd-top {
   padding-top: 33px;
   padding-left: 10px;
 }
 
 .generate {
-  margin-left: 50px;
+  margin-left: 45px;
+}
+
+.grid-container {
+  display: grid;
+  width: 620px;
+  grid-template-columns: 70px 150px 100px 100px 100px 100px;
+  padding: 10px;
+}
+
+.grid-container > div.grid-item:first-child {
+  padding-right: 20px;
+}
+
+[type="radio"]:not(:checked) + span,
+[type="radio"]:checked + span {
+  padding-left: 25px;
+}
+
+[type="checkbox"] + span:not(.lever) {
+  padding-left: 25px;
+}
+
+.filter-solved-group,
+.filter-manual-group {
+  display: inline-block;
+}
+
+.no-tickets {
+  padding: 10px;
 }

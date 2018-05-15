@@ -22,7 +22,9 @@ class Main extends Component {
         <Route
           exact
           path={routes.HOME}
-          render={() => <TicketsList {...this.props} />}
+          render={() => (
+            <TicketsList loading={this.state.loading} {...this.props} />
+          )}
         />
         <Route
           path={routes.ADD_NEW}
